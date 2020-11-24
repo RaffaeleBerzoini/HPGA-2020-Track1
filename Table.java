@@ -3,7 +3,6 @@ package DataStructures;
 import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.io.File;
 import java.util.Scanner;
 
