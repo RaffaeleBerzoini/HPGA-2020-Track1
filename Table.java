@@ -1,5 +1,6 @@
-package Pocek;
+package DataStructures;
 
+import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,27 +9,33 @@ import java.util.Scanner;
 
 public class Table {
 
-    private ArrayList<Integer> user;
-    private ArrayList<Integer> friend;
+    private IntArrayList user;
+    private IntArrayList friend;
 
     public void DataStorageAll(String path) throws IOException{
-        this.user = new ArrayList<>();
-        this.friend = new ArrayList<>();
+        this.user = new IntArrayList();
+        this.friend = new IntArrayList();
         Scanner scanner = new Scanner(new File(path));
-        int i=0;
         while(scanner.hasNextInt()){
-            user.add(i,scanner.nextInt());
-            friend.add(i,scanner.nextInt());
-            i++;
+            user.add(scanner.nextInt());
+            friend.add(scanner.nextInt());
         }
     }
     public void DataStorageSubset(String path, int n_rel) throws IOException{
-        this.user = new ArrayList<>();
-        this.friend = new ArrayList<>();
+        this.user = new IntArrayList();
+        this.friend = new IntArrayList();
         Scanner scanner = new Scanner(new File(path));
         for(int i=0; i<n_rel; i++){
-            user.add(i,scanner.nextInt());
-            friend.add(i,scanner.nextInt());
+            user.add(scanner.nextInt());
+            friend.add(scanner.nextInt());
+        }
+    }
+
+    public void printRelationships(){
+        for(int i=0; i<user.size(); i++){
+            System.out.print(user.get(i));
+            System.out.print("  ");
+            System.out.println(friend.get(i));
         }
     }
 }
