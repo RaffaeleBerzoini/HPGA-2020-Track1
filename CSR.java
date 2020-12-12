@@ -1,5 +1,4 @@
-package DataStructures;
-
+package Pokec;
 import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList;
 
 import java.io.File;
@@ -12,14 +11,6 @@ public class CSR {
     private IntArrayList ptr;
     private IntArrayList idx;
     private FileWriter myWriter;
-
-    public CSR(){
-        try {
-            this.myWriter = new FileWriter("filename.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void DataStorageAll(String path) throws FileNotFoundException {
         ptr = new IntArrayList();
@@ -67,17 +58,7 @@ public class CSR {
         ptr.add(idx.size()); //Last val of ptr array
     }
 
-    public void printRelationships(){
-        for(int i = 0; i<ptr.size()-1; i++){
-            for(int j = ptr.get(i); j < ptr.get(i+1); j++){
-                System.out.print(i+1);
-                System.out.print("  ");
-                System.out.println(idx.get(j));
-            }
-        }
-    }
-
-    public IntArrayList singleTraverse (int userID) {
+    private IntArrayList singleTraverse (int userID) {
         IntArrayList friends = new IntArrayList();
         try {
             for (int i = ptr.get(userID - 1); i < ptr.get(userID); i++) {
@@ -89,7 +70,7 @@ public class CSR {
         return friends;
     }
 
-    public ArrayList<IntArrayList> multipleTraverse(int userID, int depth) throws InterruptedException {
+    public ArrayList<IntArrayList> multipleTraverse(int userID, int depth) throws InterruptedException {   //See HashJoin comments
         ArrayList<IntArrayList> links = new ArrayList<IntArrayList>();
         ArrayList<IntArrayList> links2 = new ArrayList<IntArrayList>();
         ArrayList<IntArrayList> links3 = new ArrayList<IntArrayList>();
@@ -104,6 +85,13 @@ public class CSR {
         int end = friends.size();
         int partitions = 8;
         int length = (end-start)/partitions;
+
+        try {
+            this.myWriter = new FileWriter("FriendsCSR.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Thread t1 = new Thread(()->{
             for (int i = start; i < start + length; i++){
                 IntArrayList currentPath = new IntArrayList();
@@ -129,7 +117,7 @@ public class CSR {
             }
         });
         Thread t4 = new Thread(()->{
-            for (int i = start+3*length; i < 4*length; i++){
+            for (int i = start+3*length; i < start+4*length; i++){
                 IntArrayList currentPath = new IntArrayList();
                 currentPath.add(userID);
                 currentPath.add(friends.get(i));
@@ -184,7 +172,6 @@ public class CSR {
         t6.join();
         t7.join();
 
-        //TODO: solve the following memory leakage
         links.addAll(links2);
         links2.clear();
         links.addAll(links3);
@@ -209,28 +196,28 @@ public class CSR {
         return links;
     }
 
-    private void followPath(IntArrayList path, int depth, ArrayList<IntArrayList> links) {
-            if (depth == 0) {
-                if (!duplicate(copy(path))) {
-                    links.add(path);
-                    //System.out.println(path);
-                    /*try {
-                        myWriter.write(String.valueOf(path));
-                        myWriter.write("\n");
+    private void followPath(IntArrayList path, int depth, ArrayList<IntArrayList> links) {     //See IntTable.followPath
+        if (depth == 0) {
+            if (!duplicate(copy(path))) {
+                links.add(path);
+                /*
+                    try {
+                        myWriter.write(String.valueOf(path)+"\n");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
-                     */
-                }
-            }else {
-                IntArrayList friends = singleTraverse(path.get(path.size() - 1));
-                for (int i = 0; i < friends.size(); i++) {
-                    IntArrayList newPath = copy(path);
-                    newPath.add(friends.get(i));
-                    followPath(newPath, depth - 1, links);
-                }
+                 */
+
             }
+        }else {
+            IntArrayList friends = singleTraverse(path.get(path.size() - 1));
+            for (int i = 0; i < friends.size(); i++) {
+                IntArrayList newPath = copy(path);
+                newPath.add(friends.get(i));
+                followPath(newPath, depth - 1, links);
+            }
+        }
 
     }
 
@@ -242,7 +229,6 @@ public class CSR {
         return copied;
     }
 
-    //TODO: make this method faster, it makes the whole thing going  1.5/2 times slower
     private boolean duplicate(IntArrayList toCheck) {
         toCheck.sortThis();
         int length = toCheck.size();
