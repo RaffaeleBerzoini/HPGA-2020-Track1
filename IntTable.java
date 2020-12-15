@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class IntTable {
 
