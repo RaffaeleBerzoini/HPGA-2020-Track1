@@ -243,6 +243,6 @@ public class CSR {
     }
 
     public int numberOfFriends(int userID){
-        return ptr.get(userID+1)-ptr.get(userID);
+        return ptr.get(userID)-ptr.get(userID-1);
     }
 }
