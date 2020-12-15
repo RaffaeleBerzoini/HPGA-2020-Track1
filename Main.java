@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) throws InterruptedException {
-        String p = "C://Users//aucol//Documents//Università//Nects//Oracle//soc-pokec-relationships.txt"; //Please fill in with your file directory
+        String p = "soc-pokec-relationships.txt";         //Please fill in with your file directory
         CSR csr = new CSR();
         IntTable table = new IntTable();
         ArrayList<IntArrayList> results;
@@ -20,6 +20,7 @@ public class Main {
         Thread loadCSR = new Thread(() -> {
             try {
                 csr.DataStorageAll(p);
+                //csr.DataStorageSubset(p, 1000);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -27,6 +28,7 @@ public class Main {
         Thread loadTable = new Thread(() -> {
             try {
                 table.DataStorageAll(p);
+                //table.DataStorageSubset(p,1000);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -56,6 +58,7 @@ public class Main {
             long end = System.nanoTime();
             float totalTime = (float) ((end*1.0 - start*1.0)/1000000000);
             System.out.println(results.size() + " results given in " + totalTime + " seconds");
+            //System.out.println(results);       //To see results
         }
     }
 
