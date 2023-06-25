@@ -6,4 +6,4 @@ In the Main threads we left you some comments to store a subset and also in whil
 
 You need to run the "public static void main" located in Main.java class. 
 
-You can find the data recollected during tests for the heuristic engine at https://docs.google.com/spreadsheets/d/1a1tdqr3sUBIwUd6BGJCyoLjkslZdPhaNxyDYqoXrcqQ/edit#gid=0.
+You can find the data recollected during tests for the heuristic engine in the _SwitchingPoint.xlsx_ file
